@@ -257,7 +257,7 @@ The code and related documentation in this repository is released under an MIT l
 
 [![CC BY 4.0][cc-by-shield]][cc-by]
 
-Except for third-party evidence excerpts, the MDHJudgments dataset is licensed under a Creative Commons Attribution 4.0 International License. Evidence excerpts remain subject to the rights of their respective source owners and are included with source URLs for research and scholarly analysis the MDHJudgments dataset is licensed under a [Creative Commons Attribution 4.0 International License][cc-by].
+Except for third-party evidence excerpts, the MDHJudgments dataset is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. Evidence excerpts remain subject to the rights of their respective source owners and are included with source URLs for research and scholarly analysis.  
 
 [![CC BY 4.0][cc-by-image]][cc-by]
 

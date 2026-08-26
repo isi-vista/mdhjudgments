@@ -71,10 +71,7 @@ def _merge_responses(responses: Iterable[EnhancedResponse]) -> list[_MergedRespo
             merged_responses[response.id] = merged_response
         else:
             original = merged_response.response
-            if (
-                original.question != response.question
-                or original.answer != response.answer
-            ):
+            if original.question != response.question or original.answer != response.answer:
                 raise ValueError(f"Conflicting response data for ID {response.id!r}")
 
         if response.annotations is None:

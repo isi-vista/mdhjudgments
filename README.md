@@ -265,6 +265,8 @@ The MDHJudgments dataset is licensed under a [Creative Commons Attribution 4.0 I
 [cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
 [cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
 
+This dataset includes short excerpts from publicly available sources to preserve the evidence consulted during fact-checking adjudication. Each excerpt is accompanied by the URL of its source. If you are a rights holder and would like us to review an excerpt for removal, please contact mrf@isi.edu and identify the excerpt, its source URL, and the basis for your request. We will review reasonable requests and, where appropriate, remove or replace the excerpt in a subsequent release.
+
 ## Citation
 
 TODO

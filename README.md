@@ -222,7 +222,6 @@ PYTHONPATH=. python mdhjudgments/enhanced_responses_to_csv.py \
              data/mdhjudgments-secondmedicalexpertadjudication.jsonl \
              data/mdhjudgments-firstfactcheckeradjudication.jsonl \
              data/mdhjudgments-secondfactcheckeradjudication.jsonl \
-             --output \
              output/reformatted-data
 ```
 

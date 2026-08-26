@@ -3123,12 +3123,6 @@ def main() -> None:
     )
     print()
 
-    print(
-        "## Appendix: Table 8: Sensitivity of LaJ performance across repeated runs on a fixed model"
-    )
-    print("TODO")
-    print()
-
     print("## Appendix: Tables 9, 10, and 11 showing errors by comment category")
     print("### Section-level counts: Medical experts")
     n_sections, rows, columns = counts_by_has_error_and_comment_category(

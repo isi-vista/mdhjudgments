@@ -3123,7 +3123,7 @@ def main() -> None:
     )
     print()
 
-    print("## Appendix: Tables 9, 10, and 11 showing errors by comment category")
+    print("## Appendix: Tables 9 and 11 showing errors by comment category")
     print("### Section-level counts: Medical experts")
     n_sections, rows, columns = counts_by_has_error_and_comment_category(
         adjudications, answer_key_name="adjudication", level="section"

@@ -127,6 +127,7 @@ print((100 * gpt5_df.loc[gpt5_df["answer_key"] == "first_pass_annotators_plus_fa
 #### All other analyses
 
 ```bash
+mkdir -p output
 PYTHONPATH=. python mdhjudgments/run_hallucinations_analyses.py \
              --annotation-file \
              data/mdhjudgments-firstpassannotations.jsonl \
@@ -141,7 +142,8 @@ PYTHONPATH=. python mdhjudgments/run_hallucinations_analyses.py \
              --save-figures-to \
              output/reproduce-figures \
              --bootstrap-samples=10000 \
-             --bootstrap-seed=42
+             --bootstrap-seed=42 |
+             tee output/reproduce-analyses.md
 ```
 
 In the output:

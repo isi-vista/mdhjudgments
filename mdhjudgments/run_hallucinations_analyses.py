@@ -3144,7 +3144,7 @@ def main() -> None:
     print(latex_pct_sections_by_has_error_and_comment_category(adjudications, factcheckings))
     print("```")
     print()
-    print("### Comment-level percentages by reviewer type: Table 10 as LaTeX")
+    print("### Comment-level percentages by reviewer type: Table 11 as LaTeX")
     print("```latex")
     print(latex_pct_comments_by_reviewer_type_and_comment_category(adjudications))
     print("```")
@@ -3172,7 +3172,7 @@ def main() -> None:
         print(f"Counted over {n_sections} adjudicated LaJ false-negative sections")
         print_markdown_table(rows, columns)
         print()
-        print("#### Section-level percentages: Table 11 as LaTeX")
+        print("#### Section-level percentages: Table 10 as LaTeX")
         print("```latex")
         print(
             latex_pct_sections_by_has_error_and_comment_category_laj_pos_and_neg(

@@ -314,7 +314,7 @@ def convert(
                     }
                 )
 
-    section_columns = ["response_id", "section_id", "section_text"]
+    section_columns = ["response_id", "section_id", "section_order_in_response", "section_text"]
     if include_first_pass_count:
         section_columns.append("num_first_pass_annotations")
     if include_has_claim:

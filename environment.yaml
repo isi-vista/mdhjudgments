@@ -1,0 +1,27 @@
+name: mdhjudgments
+channels:
+  - conda-forge
+platforms: # Non-standard extension used by `conda-lock`
+  - linux-64
+  - osx-64
+  - osx-arm64
+dependencies:
+  - pip
+  - python==3.12.*
+  - pip:
+      - csvkit
+      - beautifulsoup4
+      - dominate
+      # `krippendorff` `0.7.0` introduced support for `numpy>=2`
+      - krippendorff>=0.7.0
+      - matplotlib
+      - more-itertools
+      - numpy
+      - pandas
+      - pydantic
+      - scikit-learn
+      # Development
+      - mypy[faster-cache]>=1.13
+      # `pre-commit` `1.15.0` introduced `minimum_pre_commit_version` top-level key
+      - pre-commit>=1.15.0
+      - pylint

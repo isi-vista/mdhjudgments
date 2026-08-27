@@ -29,4 +29,6 @@ History currently contains only `Initial commit`, so no detailed convention is e
 
 When creating a Git commit, include this trailer at the end of the commit message:
 
+```text
 Co-Authored-By: <model name> <noreply@example.com>
+```

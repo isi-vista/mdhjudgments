@@ -164,6 +164,24 @@ In the output:
 ### Reproducing the human-readable data from supplemental
 
 ```bash
+# Combined visualization of annotation data,
+# medical expert and fact-checker adjudications.
+#
+# May be more difficult to read than the partwise
+# visualizations created below.
+mkdir -p output
+PYTHONPATH=. python mdhjudgments/visualize_data.py \
+             --annotation-file \
+             data/mdhjudgments-firstpassannotations.jsonl \
+             --adjudication-files \
+             data/mdhjudgments-firstmedicalexpertadjudication.jsonl \
+             data/mdhjudgments-secondmedicalexpertadjudication.jsonl \
+             --factchecking-files \
+             data/mdhjudgments-firstfactcheckeradjudication.jsonl \
+             data/mdhjudgments-secondfactcheckeradjudication.jsonl \
+             --output \
+             output/mdhjudgments-complete.html
+
 mkdir -p output/visualizations
 
 # First pass annotations

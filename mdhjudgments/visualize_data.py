@@ -208,27 +208,56 @@ def _render_section_annotations(
     )
 
 
-def _render_adjudication(review: SourcedReview[SectionAdjudicationModel], index: int) -> str:
+def _render_adjudication(
+    review: SourcedReview[SectionAdjudicationModel],
+    index: int,
+    annotations_by_id: dict[str, InformationAccuracyAnnotationModel],
+) -> str:
     """Render one medical-expert adjudication pane."""
     adjudication = review.review
-    categories = {
-        comment_id: [str(category) for category in values]
-        for comment_id, values in adjudication.q2_category_response.items()
-    }
-    table = _key_value_table(
-        "Medical-Expert Adjudication",
-        [
-            ("ID", adjudication.id),
-            ("Parent ID", adjudication.parent_id),
-            ("Adjudicator ID", adjudication.annotator_id),
-            ("Timestamp", adjudication.timestamp),
-            ("Aggregate Judgment", adjudication.aggregate_judgment),
-            ("Q1", adjudication.q1_response),
-            ("Q2 Categories by Comment ID", categories),
+    value_rows = [
+        ("Adjudicator ID", adjudication.annotator_id),
+        ("Timestamp", adjudication.timestamp),
+        ("Aggregate Judgment", adjudication.aggregate_judgment),
+        ("Q1", adjudication.q1_response),
+    ]
+    value_rows_html = "".join(
+        f"<tr>{_cell(label, css_class='label')}<td colspan=\"2\">"
+        f"{escape(_format_value(value))}</td></tr>"
+        for label, value in value_rows
+    )
+    q2_rows = list(adjudication.q2_category_response.items())
+    q2_html = (
+        f'<tr><td class="label" rowspan="{max(1, len(q2_rows)) + 1}">Q2 Categories</td>'
+        "<th>Comment text</th><th>Categories applied</th></tr>"
+        + "".join(
+            _row(
+                [
+                    (
+                        annotations_by_id[comment_id].comment
+                        if comment_id in annotations_by_id
+                        else "Annotation text unavailable"
+                    ),
+                    [str(category) for category in categories],
+                ]
+            )
+            for comment_id, categories in q2_rows
+        )
+        + ("" if q2_rows else '<tr><td colspan="2" class="empty">No categories supplied</td></tr>')
+    )
+    trailing_rows_html = "".join(
+        f"<tr>{_cell(label, css_class='label')}<td colspan=\"2\">"
+        f"{escape(_format_value(value))}</td></tr>"
+        for label, value in [
             ("Q3", adjudication.q3_response),
-            ("Saw Annotation IDs", adjudication.saw_annotation_ids),
             ("Comment", adjudication.comment),
-        ],
+            ("Saw Annotation IDs", adjudication.saw_annotation_ids),
+        ]
+    )
+    table = (
+        '<table class="data-table review-table">'
+        '<tr><th class="spanning" colspan="3">Medical-Expert Adjudication</th></tr>'
+        f"{value_rows_html}{q2_html}{trailing_rows_html}</table>"
     )
     return (
         '<section class="review-pane">'
@@ -252,14 +281,11 @@ def _render_fact_checking(review: SourcedReview[SectionFactCheckingModel], index
     table = _key_value_table(
         "Fact-Checking",
         [
-            ("ID", fact_checking.id),
-            ("Parent ID", fact_checking.parent_id),
             ("Fact-Checker ID", fact_checking.annotator_id),
             ("Timestamp", fact_checking.timestamp),
             ("Aggregate Judgment", fact_checking.aggregate_judgment),
             ("Q1", fact_checking.q1_response),
             ("Q2 Categories", _fact_checking_categories(fact_checking.q2_category_response)),
-            ("Saw Annotation IDs", fact_checking.saw_annotation_ids),
             ("Q3 Choice", fact_checking.q3_choice),
             ("Q3 URL", fact_checking.q3_url),
             ("Q4 Evidence Sentences", fact_checking.q4_excerpt),
@@ -267,6 +293,7 @@ def _render_fact_checking(review: SourcedReview[SectionFactCheckingModel], index
             ("Q5b Choice", fact_checking.q5b_choice),
             ("Q5c Choice", fact_checking.q5c_choice),
             ("Q6 Comment", fact_checking.q6_comment),
+            ("Saw Annotation IDs", fact_checking.saw_annotation_ids),
         ],
     )
     return (
@@ -309,6 +336,7 @@ def build_html(
         ]
         for section in response.annotations.sections_with_annotations:
             section_count += 1
+            annotations_by_id = {annotation.id: annotation for annotation in section.annotations}
             response_parts.extend(
                 [
                     '<section class="section-box">',
@@ -320,7 +348,11 @@ def build_html(
                     _render_review_group(
                         "Medical-Expert Adjudications",
                         [
-                            _render_adjudication(review, index)
+                            _render_adjudication(
+                                review,
+                                index,
+                                annotations_by_id,
+                            )
                             for index, review in enumerate(
                                 adjudications.get(section.id, []), start=1
                             )

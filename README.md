@@ -257,7 +257,7 @@ The code and related documentation in this repository is released under an MIT l
 
 [![CC BY 4.0][cc-by-shield]][cc-by]
 
-Except for third-party evidence excerpts, the MDHJudgments dataset is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. Evidence excerpts remain subject to the rights of their respective source owners and are included with source URLs for research and scholarly analysis.  
+Except for third-party evidence excerpts, the MDHJudgments dataset is licensed under a [Creative Commons Attribution 4.0 International License][cc-by]. Evidence excerpts remain subject to the rights of their respective source owners and are included with source URLs for research and scholarly analysis.
 
 [![CC BY 4.0][cc-by-image]][cc-by]
 
@@ -265,7 +265,7 @@ Except for third-party evidence excerpts, the MDHJudgments dataset is licensed u
 [cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
 [cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
 
-This dataset includes short excerpts from publicly available sources to preserve the evidence consulted during fact-checking adjudication. Each excerpt is accompanied by the URL of its source. If you are a rights holder and would like us to review an excerpt for removal, please contact mrf@isi.edu and identify the excerpt, its source URL, and the basis for your request. We will review reasonable requests and, where appropriate, remove or replace the excerpt in a subsequent release.
+This dataset includes short excerpts from publicly available sources to preserve the evidence consulted during fact-checking adjudication. Each excerpt is accompanied by the URL of its source. If you are a rights holder and would like us to review an excerpt for removal, please contact [mrf@isi.edu](mailto:mrf@isi.edu) and identify the excerpt, its source URL, and the basis for your request. We will review reasonable requests and, where appropriate, remove or replace the excerpt in a subsequent release.
 
 ## Citation
 

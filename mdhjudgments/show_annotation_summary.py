@@ -251,13 +251,7 @@ def build_html(
             sub_hdr = tr()
             for hname in [
                 "annotator_id",
-                "clarity",
-                "comprehensiveness",
-                "credibility",
-                "disclaimer",
-                "empathy",
                 "accuracy",
-                "list_completeness",
                 "sources",
             ]:
                 sub_hdr.add(th(hname))
@@ -268,13 +262,7 @@ def build_html(
                 dims = a.dimensions
                 row = tr()
                 row.add(td(a.annotator_id))
-                row.add(td("" if dims is None else str(dims.clarity)))
-                row.add(td("" if dims is None else str(dims.comprehensiveness)))
-                row.add(td("" if dims is None else str(dims.credibility)))
-                row.add(td("" if dims is None else str(dims.disclaimer)))
-                row.add(td("" if dims is None else str(dims.empathy)))
                 row.add(td("" if dims is None else str(dims.accuracy)))
-                row.add(td("" if dims is None else str(dims.list_completeness)))
                 row.add(td("\n\n".join(a.sources)))
 
                 aa_tbl.add(row)

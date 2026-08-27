@@ -26,3 +26,7 @@ No automated test suite or coverage threshold is configured yet. For every chang
 ## Commit & Pull Request Guidelines
 
 History currently contains only `Initial commit`, so no detailed convention is established. Use short, imperative subjects focused on the behavior changed (for example, `Fix section-level agreement calculation`, `Fix response-level Krippendorff alpha calculation` and `Add matplotlib requirement`). Keep each commit focused. Pull requests should explain the change and its data assumptions, list validation commands and results, and link the relevant issue. Include sample output or screenshots when HTML review pages or generated figures change, without exposing sensitive annotation data.
+
+When creating a Git commit, include this trailer at the end of the commit message:
+
+Co-Authored-By: <model name> <noreply@example.com>

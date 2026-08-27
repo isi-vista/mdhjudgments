@@ -81,7 +81,6 @@ def build_html(
                         "annotator_id": a.annotator_id,
                         "accuracy_type": a.accuracy_type,
                         "certainty": "true" if (ec and ec.certainty) else "false",
-                        "critical": "true" if (ec and ec.critical) else "false",
                         "risk": "true" if (ec and ec.risk) else "false",
                         "urgency": "true" if (ec and ec.urgency) else "false",
                         "comment": a.comment,

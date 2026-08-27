@@ -30,7 +30,6 @@ class CommentEntry:
     annotator_id: str
     accuracy_type: str
     certainty: str
-    critical: str
     risk: str
     urgency: str
     categories: str
@@ -101,7 +100,6 @@ def build_comment_rows(
                 annotator_id=annotation.annotator_id,
                 accuracy_type=str(annotation.accuracy_type),
                 certainty=str(annotation.element_correctness.certainty).lower(),
-                critical=str(annotation.element_correctness.critical).lower(),
                 risk=str(annotation.element_correctness.risk).lower(),
                 urgency=str(annotation.element_correctness.urgency).lower(),
                 categories=(
@@ -253,8 +251,8 @@ def build_html(responses: list[EnhancedResponse]) -> str:
     doc.add(style(css))
 
     # Total columns for the per-comment:
-    # comment_id + annotator_id + criticality + 4 dimensions correctness + categories + comment text
-    total_comment_cols = 1 + 1 + 1 + 4 + 1 + 1  # = 9
+    # comment_id + annotator_id + 4 dimensions correctness + categories + comment text
+    total_comment_cols = 1 + 1 + 4 + 1 + 1  # = 9
 
     for response_entry in response_entries:
         group = div(cls="response-box")
@@ -296,7 +294,6 @@ def build_html(responses: list[EnhancedResponse]) -> str:
                 "annotator_id",
                 "accuracy_type",
                 "certainty",
-                "critical",
                 "risk",
                 "urgency",
                 "categories",
@@ -312,7 +309,6 @@ def build_html(responses: list[EnhancedResponse]) -> str:
                     row.annotator_id,
                     row.accuracy_type,
                     row.certainty,
-                    row.critical,
                     row.risk,
                     row.urgency,
                     row.categories,

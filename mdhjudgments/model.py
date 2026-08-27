@@ -62,6 +62,13 @@ class InformationAccuracyAnnotationModel(AnnotationModel):
     element_correctness: BinaryElementCorrectnessModel
 
 
+class QuestionAnnotationModel(AnnotationModel):
+    """Question annotation model."""
+
+    nonsensical: bool
+    dontunderstand: bool
+
+
 class DimensionModel(BaseModel):
     """Dimension model."""
 
@@ -393,6 +400,7 @@ class SectionResponseAnnotation(BaseModel):
 class ResponseAnnotationModel(BaseModel):
     """Response Annotation Model."""
 
+    question_annotations: list[QuestionAnnotationModel] = Field(default_factory=list)
     answer_annotations: list[AnswerAnnotationModel] = Field(default_factory=list)
     sections_with_annotations: list[SectionResponseAnnotation] = Field(default_factory=list)
 

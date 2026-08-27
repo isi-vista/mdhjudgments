@@ -140,10 +140,9 @@ def _render_answer_annotations(response: EnhancedResponse) -> str:
         _row(
             [
                 annotation.id,
-                annotation.parent_id,
                 annotation.annotator_id,
                 annotation.timestamp,
-                annotation.dimensions,
+                annotation.dimensions.accuracy if annotation.dimensions is not None else None,
                 annotation.sources,
             ]
         )
@@ -151,12 +150,10 @@ def _render_answer_annotations(response: EnhancedResponse) -> str:
     )
     return (
         '<table class="data-table annotation-table">'
-        '<tr><th class="spanning" colspan="6">Per-Answer Annotations</th></tr>'
-        + _row(
-            ["ID", "Parent ID", "Annotator ID", "Timestamp", "Dimensions", "Sources"], header=True
-        )
+        '<tr><th class="spanning" colspan="5">Per-Answer Annotations</th></tr>'
+        + _row(["ID", "Annotator ID", "Timestamp", "Accuracy", "Sources"], header=True)
         + rows
-        + ("" if annotations else '<tr><td colspan="6" class="empty">None</td></tr>')
+        + ("" if annotations else '<tr><td colspan="5" class="empty">None</td></tr>')
         + "</table>"
     )
 
@@ -169,7 +166,6 @@ def _render_section_annotations(
         _row(
             [
                 annotation.id,
-                annotation.parent_id,
                 annotation.annotator_id,
                 annotation.timestamp,
                 annotation.accuracy_type,
@@ -183,11 +179,10 @@ def _render_section_annotations(
     )
     return (
         '<table class="data-table annotation-table">'
-        '<tr><th class="spanning" colspan="9">First-Pass Section Annotations</th></tr>'
+        '<tr><th class="spanning" colspan="8">First-Pass Section Annotations</th></tr>'
         + _row(
             [
                 "ID",
-                "Parent ID",
                 "Annotator ID",
                 "Timestamp",
                 "Accuracy Type",
@@ -202,7 +197,7 @@ def _render_section_annotations(
         + (
             ""
             if annotations
-            else f'<tr><td colspan="9" class="empty">No annotations for {escape(section_id)}</td></tr>'
+            else f'<tr><td colspan="8" class="empty">No annotations for {escape(section_id)}</td></tr>'
         )
         + "</table>"
     )

@@ -236,7 +236,7 @@ def convert(
                         "annotation_id": first_pass_annotation.id,
                         "annotator_id": first_pass_annotation.annotator_id,
                         "is_human": is_human(first_pass_annotation),
-                        "has_hallucination": _has_hallucination(
+                        "has_error": _has_hallucination(
                             first_pass_annotation.accuracy_type,
                             certainty=correctness.certainty,
                             risk=correctness.risk,
@@ -254,7 +254,7 @@ def convert(
                     {
                         "section_id": section.id,
                         "adjudicator_id": adjudication.annotator_id,
-                        "aggregate_judgment": str(adjudication.aggregate_judgment),
+                        "has_error": str(adjudication.aggregate_judgment),
                         "q1_response": str(adjudication.q1_response),
                         "q3_response": str(adjudication.q3_response),
                         "comment": adjudication.comment,
@@ -289,7 +289,7 @@ def convert(
                     {
                         "section_id": section.id,
                         "factchecker_id": fact_checking.annotator_id,
-                        "aggregate_judgment": str(fact_checking.aggregate_judgment),
+                        "has_error": str(fact_checking.aggregate_judgment),
                         "q1_response": str(fact_checking.q1_response),
                         "q3_response": str(fact_checking.q3_choice),
                         "q3_url": fact_checking.q3_url,
@@ -335,7 +335,7 @@ def convert(
             "annotation_id",
             "annotator_id",
             "is_human",
-            "has_hallucination",
+            "has_error",
             "accuracy_type",
             "certainty",
             "risk",
@@ -348,7 +348,7 @@ def convert(
         [
             "section_id",
             "adjudicator_id",
-            "aggregate_judgment",
+            "has_error",
             "q1_response",
             "q3_response",
             "comment",
@@ -366,7 +366,7 @@ def convert(
         [
             "section_id",
             "factchecker_id",
-            "aggregate_judgment",
+            "has_error",
             "q1_response",
             "q3_response",
             "q3_url",

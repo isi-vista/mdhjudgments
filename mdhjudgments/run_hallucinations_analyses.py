@@ -3097,6 +3097,18 @@ def main() -> None:
         print()
     print()
 
+    print("## Appendix C.4: FC % marked error")
+    fc_marked_has_error = [
+        section.fact_checking.aggregate_judgment == AdjudicationJudgment.HALLUCINATION
+        for factchecking in factcheckings
+        for response in factchecking
+        for section in response.annotations.sections_with_annotations
+        if section.fact_checking is not None
+    ]
+    n_marked_error = sum(fc_marked_has_error)
+    print(f"{n_marked_error / len(fc_marked_has_error):.0%} ({n_marked_error} / {len(fc_marked_has_error)})")
+    print()
+
     print("## Figure 2: Average scalar accuracy vs. % of sections labeled hallucination")
     names, figs, _axs = plot_avg_response_accuracy_vs_section_accuracy(
         data, adjudications, factcheckings

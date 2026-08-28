@@ -3014,24 +3014,35 @@ def main() -> None:
     print("## Tables 3 and 4")
     print("### Tables 3 and 4 upper halves: Agreement numbers")
     for name, matrix in agreement_confusion_matrices(data, adjudications, factcheckings).items():
-        print(f"### {name} (#)")
-        vs = "_vs_"
-        side_label: str
-        top_label: str
-        if vs in name:
-            side_label, top_label = name.split(vs)
+        print(f"### {name} (# and %)")
+        # Convert from confusion matrix to a table like what is in the paper
+        row_labels: list[str]
+        row_index_pairs: list[tuple[bool, bool]]
+        round_to: int
+        if "_vs_" in name:
+            row_labels = ["Agree:Err=True", "Agree:Err=False", "Disagree:TF", "Disagree:FT"]
+            row_index_pairs = [(True, True), (False, False), (True, False), (False, True)]
+            assert len(row_labels) == len(row_index_pairs)
+            round_to = 2
         else:
-            side_label = top_label = name
-        print_confusion_matrix(matrix, side_label=side_label, top_label=top_label)
-        print()
-        print(f"### {name} (%)")
-        total = (
-            sum(sum(r.values()) for r in matrix.values())
-            if "_vs_" in name
-            else matrix[True][True] + matrix[True][False] + matrix[False][False]
-        )
-        percent_matrix = {rl: {cl: v / total for cl, v in r.items()} for rl, r in matrix.items()}
-        print_confusion_matrix(percent_matrix, side_label=side_label, top_label=top_label)
+            row_labels = ["Agree:Err=True", "Agree:Err=False", "Disagree"]
+            row_index_pairs = [(True, True), (False, False), (True, False)]
+            assert len(row_labels) == len(row_index_pairs)
+            round_to = 1
+        numbers = [
+            matrix[mrowidx][mcolidx]
+            for mrowidx, mcolidx in row_index_pairs
+        ]
+        percentages = [round(100 * number/ sum(numbers), round_to) for number in numbers]
+        rows = [
+            {
+                "Agreement?": row_label,
+                "#": number,
+                "%": percentage,
+            }
+            for row_label, number, percentage in zip(row_labels, numbers, percentages, strict=True)
+        ]
+        print_markdown_table(rows=rows, columns=["Agreement?", "#", "%"])
         print()
     print()
 

@@ -109,18 +109,24 @@ gpt5_df = df[df["predictor"].str.contains("GPT-5")]
 gemini_df = df[df["predictor"].str.contains("Gemini3.5Flash")]
 
 relevant_rows = ["50%", "min", "max"]
+gemini_me = (100 * gemini_df.loc[gemini_df["answer_key"] == "first_pass_annotators_plus_medical_experts", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0)
+gpt5_me = (100 * gpt5_df.loc[gpt5_df["answer_key"] == "first_pass_annotators_plus_medical_experts", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0)
+gemini_fc = (100 * gemini_df.loc[gemini_df["answer_key"] == "first_pass_annotators_plus_fact_checkers", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0)
+gpt5_fc = (100 * gpt5_df.loc[gpt5_df["answer_key"] == "first_pass_annotators_plus_fact_checkers", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0)
 
-print("Gemini-ME")
-print((100 * gemini_df.loc[gemini_df["answer_key"] == "first_pass_annotators_plus_medical_experts", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0))
+def as_rowpart(df):
+    return (
+      f"{df.loc["50%", "precision"]} [{df.loc["min", "precision"]}-{df.loc["max", "precision"]}]"
+      " | "
+      f"{df.loc["50%", "recall"]} [{df.loc["min", "recall"]}-{df.loc["max", "recall"]}]"
+    )
 
-print("GPT-5-ME")
-print((100 * gpt5_df.loc[gpt5_df["answer_key"] == "first_pass_annotators_plus_medical_experts", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0))
-
-print("Gemini-FcCk")
-print((100 * gemini_df.loc[gemini_df["answer_key"] == "first_pass_annotators_plus_fact_checkers", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0))
-
-print("GPT-5-FcCk")
-print((100 * gpt5_df.loc[gpt5_df["answer_key"] == "first_pass_annotators_plus_fact_checkers", ["precision", "recall"]]).describe().transpose()[relevant_rows].transpose().round(0))
+print("| Config | Ref   | Prec [range]     | Recall [range]   |")
+print("| ------ | ----- | ---------------- | ---------------- |")
+print("| Gemini | FP+ME | " + as_rowpart(gemini_me) + " |")
+print("| GPT-5  | FP+ME | " + as_rowpart(gpt5_me) + " |")
+print("| Gemini | FP+FC | " + as_rowpart(gemini_fc) + " |")
+print("| GPT-5  | FP+FC | " + as_rowpart(gpt5_fc) + " |")
 ' output/reproduce-scores/table8_scores.csv
 ```
 

@@ -3087,7 +3087,12 @@ def main() -> None:
         },
     }
     for name, matrix in confusion_matrices(adjudications, factcheckings).items():
-        print(f"### {name}")
+        print(f"### {name} (%)")
+        total = sum(v for c_to_v in matrix.values() for v in c_to_v.values())
+        percent_matrix = {r: {c: round(100 * v / total, 0) for c, v in c_to_v.items()} for r, c_to_v in matrix.items()}
+        print_confusion_matrix(percent_matrix, **matrix_labels[name])
+        print()
+        print(f"### {name} (#)")
         print_confusion_matrix(matrix, **matrix_labels[name])
         print()
     print()

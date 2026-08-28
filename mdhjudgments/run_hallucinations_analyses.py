@@ -3230,6 +3230,35 @@ def main() -> None:
     print()
 
     print("### Table 13 upper half: First-pass annotation coverage by annotator type")
+    ai_researcher, students, medical_experts = first_pass_annotation_coverage_by_type(data)
+    assert ai_researcher["annotator_type"] == "AI Researcher"
+    assert students["annotator_type"] == "Student"
+    assert medical_experts["annotator_type"] == "Medical Expert"
+    measures_of_interest = [
+        "distinct_annotators",
+        "section_level_multiple_annotated_sections",
+        "section_level_single_annotated_sections",
+    ]
+    measure_glosses = {
+        "distinct_annotators": "Annotators, n",
+        "section_level_multiple_annotated_sections": "Multiply Ann. Sec.",
+        "section_level_single_annotated_sections": "Singly Ann. Sec.",
+    }
+    columns = ("Measure", "AI Researchers", "Students", "FP medical experts")
+    print(f"DEBUG: ai_researcher={ai_researcher}")
+    rows = [
+        {
+            "Measure": measure_glosses[measure],
+            "AI Researchers": ai_researcher[measure],
+            "Students": students[measure],
+            "FP medical experts": medical_experts[measure],
+        }
+        for measure in measures_of_interest
+    ]
+    print_markdown_table(rows, columns)
+    print()
+
+    print("### Full details: First-pass annotation coverage by annotator type")
     print_markdown_table(
         first_pass_annotation_coverage_by_type(data),
         [

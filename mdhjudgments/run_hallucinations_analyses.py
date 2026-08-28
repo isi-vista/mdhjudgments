@@ -3276,16 +3276,34 @@ def main() -> None:
     )
     print()
 
-    print("### Table 13 lower half: FP Ann precision/recall/F1 by annotator type")
+    fp_prf1_by_annotator_type = first_pass_precision_recall_f1_by_type(
+        data,
+        adjudications,
+        factcheckings,
+        bootstrap_samples=bootstrap_samples,
+        bootstrap_seed=bootstrap_seed,
+    )
     ci_desc = format(BOOTSTRAP_CONFIDENCE_LEVEL, ".0%")
+
+    print("### Table 13 lower half: FP Ann precision/recall/F1 by annotator type")
     print_markdown_table(
-        first_pass_precision_recall_f1_by_type(
-            data,
-            adjudications,
-            factcheckings,
-            bootstrap_samples=bootstrap_samples,
-            bootstrap_seed=bootstrap_seed,
-        ),
+        fp_prf1_by_annotator_type,
+        [
+            "answer_key",
+            "annotator_type",
+            "precision",
+            f"precision_bootstrap{ci_desc}ci_responselevel",
+            "recall",
+            f"recall_bootstrap{ci_desc}ci_responselevel",
+            "f1",
+            f"f1_bootstrap{ci_desc}ci_responselevel",
+        ],
+    )
+    print()
+
+    print("### Full details: FP Ann precision/recall/F1 by annotator type")
+    print_markdown_table(
+        fp_prf1_by_annotator_type,
         [
             "answer_key",
             "annotator_type",

@@ -3029,11 +3029,8 @@ def main() -> None:
             row_index_pairs = [(True, True), (False, False), (True, False)]
             assert len(row_labels) == len(row_index_pairs)
             round_to = 1
-        numbers = [
-            matrix[mrowidx][mcolidx]
-            for mrowidx, mcolidx in row_index_pairs
-        ]
-        percentages = [round(100 * number/ sum(numbers), round_to) for number in numbers]
+        numbers = [matrix[mrowidx][mcolidx] for mrowidx, mcolidx in row_index_pairs]
+        percentages = [round(100 * number / sum(numbers), round_to) for number in numbers]
         rows = [
             {
                 "Agreement?": row_label,
@@ -3089,7 +3086,10 @@ def main() -> None:
     for name, matrix in confusion_matrices(adjudications, factcheckings).items():
         print(f"### {name} (%)")
         total = sum(v for c_to_v in matrix.values() for v in c_to_v.values())
-        percent_matrix = {r: {c: round(100 * v / total, 0) for c, v in c_to_v.items()} for r, c_to_v in matrix.items()}
+        percent_matrix = {
+            r: {c: round(100 * v / total, 0) for c, v in c_to_v.items()}
+            for r, c_to_v in matrix.items()
+        }
         print_confusion_matrix(percent_matrix, **matrix_labels[name])
         print()
         print(f"### {name} (#)")

@@ -3106,7 +3106,9 @@ def main() -> None:
         if section.fact_checking is not None
     ]
     n_marked_error = sum(fc_marked_has_error)
-    print(f"{n_marked_error / len(fc_marked_has_error):.0%} ({n_marked_error} / {len(fc_marked_has_error)})")
+    print(
+        f"{n_marked_error / len(fc_marked_has_error):.0%} ({n_marked_error} / {len(fc_marked_has_error)})"
+    )
     print()
 
     print("## Figure 2: Average scalar accuracy vs. % of sections labeled hallucination")

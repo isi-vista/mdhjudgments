@@ -3012,6 +3012,23 @@ def main() -> None:
     print()
 
     print("## Tables 3 and 4")
+    print("### Calculating agreement statistics")
+    agreement_statistics_ = agreement_statistics(
+        data,
+        adjudications,
+        factcheckings,
+        bootstrap_samples=bootstrap_samples,
+        bootstrap_seed=bootstrap_seed,
+    )
+    ci_desc = format(BOOTSTRAP_CONFIDENCE_LEVEL, ".0%")
+    if bootstrap_samples:
+        print(
+            f"bootstrap_ci: {BOOTSTRAP_CONFIDENCE_LEVEL:.0%} percentile, "
+            f"samples={bootstrap_samples}, seed={bootstrap_seed}"
+        )
+    else:
+        print("bootstrap_ci: skipped")
+
     print("### Tables 3 and 4 upper halves: Agreement numbers")
     for name, matrix in agreement_confusion_matrices(data, adjudications, factcheckings).items():
         print(f"### {name} (# and %)")
@@ -3043,21 +3060,95 @@ def main() -> None:
         print()
     print()
 
-    print("### Tables 3 and 4 lower halves, plus Table 7: Agreement statistics")
-    if bootstrap_samples:
-        print(
-            f"bootstrap_ci: {BOOTSTRAP_CONFIDENCE_LEVEL:.0%} percentile, "
-            f"samples={bootstrap_samples}, seed={bootstrap_seed}"
-        )
-    else:
-        print("bootstrap_ci: skipped")
-    for k1, vs in agreement_statistics(
-        data,
-        adjudications,
-        factcheckings,
-        bootstrap_samples=bootstrap_samples,
-        bootstrap_seed=bootstrap_seed,
-    ).items():
+    print("### Table 3 lower half: % agree and alpha")
+    rows = [
+        {
+            "Measure": "% agreement",
+            "FP Micro": agreement_statistics_["first_pass_annotators"]["percent_agreement_micro"],
+            "FP Macro": agreement_statistics_["first_pass_annotators"]["percent_agreement_macro"],
+            "MdExp": agreement_statistics_["medical_experts"]["percent_agreement_macro"],
+            "FctCk": agreement_statistics_["factcheckers"]["percent_agreement_macro"],
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            "FP Micro": agreement_statistics_["first_pass_annotators"].get(
+                "percent_agreement_micro_ci_95"
+            ),
+            "FP Macro": agreement_statistics_["first_pass_annotators"].get(
+                "percent_agreement_macro_ci_95"
+            ),
+            "MdExp": agreement_statistics_["medical_experts"].get("percent_agreement_macro_ci_95"),
+            "FctCk": agreement_statistics_["factcheckers"].get("percent_agreement_macro_ci_95"),
+        },
+        {
+            "Measure": "Krippendorff's alpha",
+            "FP Micro": agreement_statistics_["first_pass_annotators"]["krippendorffs_alpha"],
+            "FP Macro": agreement_statistics_["first_pass_annotators"]["krippendorffs_alpha"],
+            "MdExp": agreement_statistics_["medical_experts"]["krippendorffs_alpha"],
+            "FctCk": agreement_statistics_["factcheckers"]["krippendorffs_alpha"],
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            "FP Micro": agreement_statistics_["first_pass_annotators"].get(
+                "krippendorffs_alpha_ci_95"
+            ),
+            "FP Macro": agreement_statistics_["first_pass_annotators"].get(
+                "krippendorffs_alpha_ci_95"
+            ),
+            "MdExp": agreement_statistics_["medical_experts"].get("krippendorffs_alpha_ci_95"),
+            "FctCk": agreement_statistics_["factcheckers"].get("krippendorffs_alpha_ci_95"),
+        },
+    ]
+    columns = ["Measure", "FP Micro", "FP Macro", "MdExp", "FctCk"]
+    print_markdown_table(rows=rows, columns=columns)
+    print()
+    print("### Table 4 lower half: % agree and xRR")
+    comparison_name_mapping = {
+        "first_pass_annotators_vs_medical_experts": "FP-MdExp",
+        "first_pass_annotators_vs_factcheckers": "FP-FctCk",
+        "laj_vs_medical_experts": "LAJ-MdExp",
+        "laj_vs_factcheckers": "LAJ-FctCk",
+        "medical_experts_vs_factcheckers": "MdExp-FctCk",
+    }
+    columns = ["Measure", *comparison_name_mapping.values()]
+    rows = [
+        {
+            "Measure": "% agreement",
+            **{
+                comparison_name_mapping[name]: vs["percent_agreement_macro"]
+                for name, vs in agreement_statistics_.items()
+                if "_vs_" in name
+            },
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            **{
+                comparison_name_mapping[name]: vs.get("percent_agreement_macro_ci_95")
+                for name, vs in agreement_statistics_.items()
+                if "_vs_" in name
+            },
+        },
+        {
+            "Measure": "xRR",
+            **{
+                comparison_name_mapping[name]: vs["cross_replication_reliability"]
+                for name, vs in agreement_statistics_.items()
+                if "_vs_" in name
+            },
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            **{
+                comparison_name_mapping[name]: vs.get("cross_replication_reliability_ci_95")
+                for name, vs in agreement_statistics_.items()
+                if "_vs_" in name
+            },
+        },
+    ]
+    print_markdown_table(rows=rows, columns=columns)
+    print()
+    print("### Extra details, plus Table 7: Agreement statistics")
+    for k1, vs in agreement_statistics_.items():
         print(f"{k1}:")
         for k2, v in vs.items():
             formatted_v = format_statistic_value(v)

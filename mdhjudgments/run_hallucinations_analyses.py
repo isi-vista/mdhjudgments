@@ -3288,19 +3288,132 @@ def main() -> None:
     ci_desc = format(BOOTSTRAP_CONFIDENCE_LEVEL, ".0%")
 
     print("### Table 13 lower half: FP Ann precision/recall/F1 by annotator type")
-    print_markdown_table(
-        fp_prf1_by_annotator_type,
-        [
-            "answer_key",
-            "annotator_type",
-            "precision",
-            f"precision_bootstrap{ci_desc}ci_responselevel",
-            "recall",
-            f"recall_bootstrap{ci_desc}ci_responselevel",
-            "f1",
-            f"f1_bootstrap{ci_desc}ci_responselevel",
-        ],
-    )
+    columns = ("Measure", "AI researchers", "Students", "FP medical experts")
+    annotator_type_mapping = {
+        "AI Researcher": "AI researchers",
+        "Student": "Students",
+        "Medical Expert": "FP medical experts",
+    }
+    mapping = {
+        answer_key: {
+            group: {
+                "Precision": None,
+                "Precision_CI": None,
+                "Recall": None,
+                "Recall_CI": None,
+            }
+            for group in ANNOTATOR_TYPE_ORDER
+        }
+        for answer_key in [
+            "first_pass_annotators_plus_medical_experts",
+            "first_pass_annotators_plus_fact_checkers",
+        ]
+    }
+    for row in fp_prf1_by_annotator_type:
+        if row["answer_key"] == "first_pass_annotators":
+            continue
+        mapping[row["answer_key"]][row["annotator_type"]] = {
+            "Precision": round(100 * row["precision"], 0),
+            "Precision_CI": (
+                tuple(round(100 * x) for x in row[f"precision_bootstrap{ci_desc}ci_responselevel"])
+                if row[f"precision_bootstrap{ci_desc}ci_responselevel"]
+                else None
+            ),
+            "Recall": round(100 * row["recall"], 0),
+            "Recall_CI": (
+                tuple(round(100 * x) for x in row[f"recall_bootstrap{ci_desc}ci_responselevel"])
+                if row[f"recall_bootstrap{ci_desc}ci_responselevel"]
+                else None
+            ),
+        }
+
+    rows = [
+        {
+            "Measure": "Medical expert Adj.",
+            "AI researchers": "",
+            "Students": "",
+            "FP medical experts": "",
+        },
+        {
+            "Measure": "Recall",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_medical_experts"
+                ][annotator_type]["Recall"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_medical_experts"
+                ][annotator_type]["Recall_CI"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+        {
+            "Measure": "Precision",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_medical_experts"
+                ][annotator_type]["Precision"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_medical_experts"
+                ][annotator_type]["Precision_CI"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+        {
+            "Measure": "Fact-checker Adj.",
+            "AI researchers": "",
+            "Students": "",
+            "FP medical experts": "",
+        },
+        {
+            "Measure": "Recall",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_fact_checkers"
+                ][annotator_type]["Recall"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_fact_checkers"
+                ][annotator_type]["Recall_CI"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+        {
+            "Measure": "Precision",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_fact_checkers"
+                ][annotator_type]["Precision"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+        {
+            "Measure": f"{ci_desc} CI",
+            **{
+                annotator_type_mapping[annotator_type]: mapping[
+                    "first_pass_annotators_plus_fact_checkers"
+                ][annotator_type]["Precision_CI"]
+                for annotator_type in ANNOTATOR_TYPE_ORDER
+            },
+        },
+    ]
+    print_markdown_table(rows, columns)
     print()
 
     print("### Full details: FP Ann precision/recall/F1 by annotator type")

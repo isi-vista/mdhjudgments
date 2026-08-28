@@ -3244,12 +3244,12 @@ def main() -> None:
         "section_level_multiple_annotated_sections": "Multiply Ann. Sec.",
         "section_level_single_annotated_sections": "Singly Ann. Sec.",
     }
-    columns = ("Measure", "AI Researchers", "Students", "FP medical experts")
+    columns = ("Measure", "AI researchers", "Students", "FP medical experts")
     print(f"DEBUG: ai_researcher={ai_researcher}")
     rows = [
         {
             "Measure": measure_glosses[measure],
-            "AI Researchers": ai_researcher[measure],
+            "AI researchers": ai_researcher[measure],
             "Students": students[measure],
             "FP medical experts": medical_experts[measure],
         }

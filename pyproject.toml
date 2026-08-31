@@ -4,8 +4,7 @@ description = "Implementation for the EMNLP 2026 submission Beyond Majority Vote
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
-# TODO fill out after anonymization
-authors = []
+authors = ["Joe Cecil", "Marjorie Freedman"]
 version = "2026.7.0"
 requires-python = ">=3.12"
 dependencies = [

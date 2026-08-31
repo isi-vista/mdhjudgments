@@ -1,5 +1,5 @@
 [project]
-name = "mdhjudgment"
+name = "mdhjudgments"
 description = "Implementation for the EMNLP 2026 submission Beyond Majority Vote: Multi-Perspective Adjudication for Medical Hallucination Detection."
 readme = "README.md"
 license = "MIT"

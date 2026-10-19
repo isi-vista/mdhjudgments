@@ -292,5 +292,6 @@ Except for third-party evidence excerpts, the MDHJudgments dataset is licensed u
 This dataset includes short excerpts from publicly available sources to preserve the evidence consulted during fact-checking adjudication. Each excerpt is accompanied by the URL of its source. If you are a rights holder and would like us to review an excerpt for removal, please contact [mrf@isi.edu](mailto:mrf@isi.edu) and identify the excerpt, its source URL, and the basis for your request. We will review reasonable requests and, where appropriate, remove or replace the excerpt in a subsequent release.
 
 ## Citation
-
-TODO
+EMNLP 2026 citation forthcoming. 
+Cecil, Joe, and Marjorie Freedman. "Beyond Majority Vote: Multi-Perspective Adjudication for Medical Hallucination Detection." arXiv preprint arXiv:2609.03953 (2026).
+https://arxiv.org/abs/2609.03953
